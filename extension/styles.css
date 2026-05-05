@@ -239,3 +239,19 @@ header#page-header {
 #sidebar-header a[aria-label="Домашняя"] {
   display: none !important;
 }
+
+/* Block 14: darker dark theme surfaces.
+   Risky selector: token variables are app-level theme variables, but this keeps the override centralized. */
+html.dark,
+body.dark,
+.dark,
+[data-theme="dark"] {
+  --main-surface-primary: #030303 !important;
+  --main-surface-secondary: #101010 !important;
+  --main-surface-tertiary: #171717 !important;
+  --message-surface: #121212 !important;
+  --bg-primary: #030303 !important;
+  --bg-secondary: #101010 !important;
+  --bg-elevated-secondary: #121212 !important;
+  --border-light: rgba(255, 255, 255, 0.1) !important;
+}
