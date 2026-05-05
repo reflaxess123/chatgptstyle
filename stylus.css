@@ -1,16 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
 
 /* Block 01: local variables.
    Changes only this stylesheet's tuning knobs. */
 :root {
-  --cgpt-font: "JetBrains Mono", "JetBrains Mono NL", "Cascadia Mono", "Consolas", monospace;
-  --cgpt-chat-max-width: 75rem;
+  --cgpt-font: "Anthropic Sans", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --cgpt-code-font: "JetBrains Mono", "JetBrains Mono NL", "Cascadia Mono", "Consolas", ui-monospace, monospace;
+  --cgpt-chat-max-width: 60rem;
   --cgpt-chat-side-padding: clamp(1rem, 4vw, 3rem);
   --cgpt-message-font-size: 16px;
   --cgpt-message-line-height: 1.7;
   --cgpt-code-font-size: 16px;
   --cgpt-composer-width: min(var(--cgpt-chat-max-width), calc(100vw - 2rem));
-  --cgpt-bubble-max-width: min(62rem, 92%);
+  --cgpt-bubble-max-width: min(50rem, 82%);
   --cgpt-bubble-radius: 20px;
   --cgpt-bubble-padding-y: 0.7rem;
   --cgpt-bubble-padding-x: 1rem;
@@ -78,7 +79,7 @@ textarea::-webkit-scrollbar,
 /* Block 05: wider user bubbles.
    Targets only user messages, not assistant markdown or code blocks. */
 [data-message-author-role="user"] {
-  --user-chat-width: min(48rem, 88%) !important;
+  --user-chat-width: min(38rem, 78%) !important;
 }
 
 /* Block 05b: ChatGPT-style message bubbles.
@@ -91,7 +92,25 @@ textarea::-webkit-scrollbar,
   border: 1px solid var(--border-light, var(--token-border-light, transparent)) !important;
 }
 
-/* Block 05c: assistant bubbles.
+/* Block 05c: stable user message text color.
+   Prevents accent colors from making user text unreadable; avoids SVG/icon selectors. */
+[data-message-author-role="user"] .user-message-bubble-color,
+[data-message-author-role="user"] .user-message-bubble-color :where(div, p, span, strong, em, a, code) {
+  color: #111111 !important;
+}
+
+html.dark [data-message-author-role="user"] .user-message-bubble-color,
+html.dark [data-message-author-role="user"] .user-message-bubble-color :where(div, p, span, strong, em, a, code),
+body.dark [data-message-author-role="user"] .user-message-bubble-color,
+body.dark [data-message-author-role="user"] .user-message-bubble-color :where(div, p, span, strong, em, a, code),
+.dark [data-message-author-role="user"] .user-message-bubble-color,
+.dark [data-message-author-role="user"] .user-message-bubble-color :where(div, p, span, strong, em, a, code),
+[data-theme="dark"] [data-message-author-role="user"] .user-message-bubble-color,
+[data-theme="dark"] [data-message-author-role="user"] .user-message-bubble-color :where(div, p, span, strong, em, a, code) {
+  color: #f5f5f5 !important;
+}
+
+/* Block 05d: assistant bubbles.
    Targets only assistant markdown containers, so buttons, formulas, and SVG icons stay outside the bubble rule. */
 [data-message-author-role="assistant"] .markdown {
   align-self: flex-start;
@@ -101,6 +120,26 @@ textarea::-webkit-scrollbar,
   padding: var(--cgpt-bubble-padding-y) var(--cgpt-bubble-padding-x) !important;
   background: var(--main-surface-secondary, var(--token-main-surface-secondary, rgba(0, 0, 0, 0.04))) !important;
   border: 1px solid var(--border-light, var(--token-border-light, transparent)) !important;
+}
+
+/* Block 05e: disable assistant bubbles for wide structured content.
+   Risky selector: uses :has(), but only inside assistant markdown and only for tables/code blocks. */
+[data-message-author-role="assistant"] .markdown:has(table),
+[data-message-author-role="assistant"] .markdown:has(pre),
+[data-message-author-role="assistant"] .markdown:has(#code-block-viewer),
+[data-message-author-role="assistant"] .markdown:has(.cm-editor) {
+  align-self: stretch !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+[data-message-author-role="assistant"] .markdown table {
+  width: 100% !important;
 }
 
 /* Block 06: compact message rhythm.
@@ -142,7 +181,7 @@ textarea::-webkit-scrollbar,
 }
 
 /* Block 08: keep code blocks readable.
-   Leaves markdown/code behavior intact while inheriting the mono stack. */
+   Uses a separate mono stack so the Claude-like UI font does not affect code. */
 pre,
 code,
 .cm-editor,
@@ -151,7 +190,7 @@ code,
 .cm-content *,
 #code-block-viewer,
 #code-block-viewer * {
-  font-family: var(--cgpt-font) !important;
+  font-family: var(--cgpt-code-font) !important;
   font-size: var(--cgpt-code-font-size) !important;
   line-height: 1.6 !important;
 }
