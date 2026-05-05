@@ -268,69 +268,6 @@ header#page-header {
   display: none !important;
 }
 
-/* Block 13: remove the ChatGPT wordmark from the left sidebar.
-   Keeps sidebar controls/icons intact and restores the sidebar header height. */
-#sidebar-header {
-  min-height: 3.25rem !important;
-  justify-content: flex-end !important;
-}
-
-#sidebar-header a[aria-label="Домашняя"] {
-  display: none !important;
-}
-
-/* Block 13b: hide extra sidebar shortcuts.
-   Keeps recent chats visible; hides New chat, Search, Codex, More, and Projects. */
-#stage-slideover-sidebar [data-testid="create-new-chat-button"] {
-  display: none !important;
-}
-
-/* Risky selector: hides the Search shortcut by targeting the wrapper immediately after New chat. */
-#stage-slideover-sidebar div:has(> [data-testid="create-new-chat-button"]) + div > button[data-sidebar-item="true"] {
-  display: none !important;
-}
-
-/* Risky selector: direct fallback for Search; keeps Recent chats via data-sidebar-keep-open. */
-#stage-slideover-sidebar button[data-sidebar-item="true"]:not([data-sidebar-keep-open]):has(span.sr-only),
-#stage-slideover-sidebar div:has(> button[data-sidebar-item="true"]:not([data-sidebar-keep-open]) > span.sr-only) {
-  display: none !important;
-}
-
-#stage-slideover-sidebar button[data-sidebar-item="true"]:has(use[href$="#ac6d36"]) {
-  display: none !important;
-}
-
-#stage-slideover-sidebar a[href*="/codex/cloud"] {
-  display: none !important;
-}
-
-/* Risky selector: hides the More shortcut that follows Codex, without touching Recent chats. */
-#stage-slideover-sidebar a[href*="/codex/cloud"] + div [data-sidebar-item="true"][aria-haspopup="menu"] {
-  display: none !important;
-}
-
-/* Risky selector: ChatGPT does not expose a stable Projects test id, so this targets project-specific rows/sections. */
-#stage-slideover-sidebar .group\/sidebar-expando-section:has([data-testid="project-folder-icon"]),
-#stage-slideover-sidebar [class*="sidebar-expando-section"]:has([data-testid="project-folder-icon"]),
-nav[aria-label="История чата"] [class*="sidebar-expando-section"]:has([data-testid="project-folder-icon"]) {
-  display: none !important;
-}
-
-/* Risky selector: fallback for project rows if ChatGPT changes the section wrapper. */
-#stage-slideover-sidebar li:has([data-testid="project-folder-icon"]),
-#stage-slideover-sidebar a[href*="/project"],
-nav[aria-label="История чата"] li:has([data-testid="project-folder-icon"]),
-nav[aria-label="История чата"] a[href*="/project"] {
-  display: none !important;
-}
-
-/* Block 13c: hide the bottom account/profile entry in the sidebar.
-   Uses ChatGPT's account profile test id and hides only its immediate wrapper. */
-#stage-slideover-sidebar [data-testid="accounts-profile-button"],
-#stage-slideover-sidebar div:has(> [data-testid="accounts-profile-button"]) {
-  display: none !important;
-}
-
 /* Block 14: darker dark theme surfaces.
    Risky selector: token variables are app-level theme variables, but this keeps the override centralized. */
 html.dark,
