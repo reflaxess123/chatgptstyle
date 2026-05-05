@@ -1,0 +1,241 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+
+/* Block 01: local variables.
+   Changes only this stylesheet's tuning knobs. */
+:root {
+  --cgpt-font: "JetBrains Mono", "JetBrains Mono NL", "Cascadia Mono", "Consolas", monospace;
+  --cgpt-chat-max-width: 75rem;
+  --cgpt-chat-side-padding: clamp(1rem, 4vw, 3rem);
+  --cgpt-message-font-size: 16px;
+  --cgpt-message-line-height: 1.7;
+  --cgpt-code-font-size: 16px;
+  --cgpt-composer-width: min(var(--cgpt-chat-max-width), calc(100vw - 2rem));
+  --cgpt-bubble-max-width: min(62rem, 92%);
+  --cgpt-bubble-radius: 20px;
+  --cgpt-bubble-padding-y: 0.7rem;
+  --cgpt-bubble-padding-x: 1rem;
+}
+
+/* Block 02: JetBrains Mono in chat and composer.
+   Keeps SVG icons untouched; targets text containers, inputs, and editable fields. */
+body,
+button,
+main,
+[role="main"],
+nav[aria-label],
+#stage-slideover-sidebar,
+[data-sidebar-item="true"],
+[data-message-author-role],
+.markdown,
+.prose,
+textarea,
+input,
+[contenteditable="true"] {
+  font-family: var(--cgpt-font) !important;
+}
+
+/* Block 03: hide scrollbars but keep scrolling.
+   Risky selector: broad on purpose, but scoped by the extension to chatgpt.com only. */
+html,
+body,
+main,
+[role="main"],
+[data-testid^="conversation-turn-"],
+textarea,
+[contenteditable="true"],
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+main::-webkit-scrollbar,
+[role="main"]::-webkit-scrollbar,
+[data-testid^="conversation-turn-"]::-webkit-scrollbar,
+textarea::-webkit-scrollbar,
+[contenteditable="true"]::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Block 04: wider chat.
+   Uses ChatGPT's own thread width variables where they exist. */
+[data-testid^="conversation-turn-"] > div {
+  --thread-content-max-width: var(--cgpt-chat-max-width) !important;
+  --thread-content-margin: var(--cgpt-chat-side-padding) !important;
+  --thread-content-margin-xs: var(--cgpt-chat-side-padding) !important;
+  --thread-content-margin-sm: var(--cgpt-chat-side-padding) !important;
+  --thread-content-margin-lg: var(--cgpt-chat-side-padding) !important;
+}
+
+[data-testid^="conversation-turn-"] > div > div {
+  max-width: var(--cgpt-chat-max-width) !important;
+}
+
+/* Block 05: wider user bubbles.
+   Targets only user messages, not assistant markdown or code blocks. */
+[data-message-author-role="user"] {
+  --user-chat-width: min(48rem, 88%) !important;
+}
+
+/* Block 05b: ChatGPT-style message bubbles.
+   Risky selector: .user-message-bubble-color is an app class, but it is the semantic user bubble wrapper. */
+[data-message-author-role="user"] .user-message-bubble-color {
+  max-width: var(--cgpt-bubble-max-width) !important;
+  border-radius: var(--cgpt-bubble-radius) !important;
+  padding: var(--cgpt-bubble-padding-y) var(--cgpt-bubble-padding-x) !important;
+  background: var(--message-surface, var(--token-message-surface, var(--main-surface-secondary, rgba(0, 0, 0, 0.04)))) !important;
+  border: 1px solid var(--border-light, var(--token-border-light, transparent)) !important;
+}
+
+/* Block 05c: assistant bubbles.
+   Targets only assistant markdown containers, so buttons, formulas, and SVG icons stay outside the bubble rule. */
+[data-message-author-role="assistant"] .markdown {
+  align-self: flex-start;
+  width: fit-content !important;
+  max-width: var(--cgpt-bubble-max-width) !important;
+  border-radius: var(--cgpt-bubble-radius) !important;
+  padding: var(--cgpt-bubble-padding-y) var(--cgpt-bubble-padding-x) !important;
+  background: var(--main-surface-secondary, var(--token-main-surface-secondary, rgba(0, 0, 0, 0.04))) !important;
+  border: 1px solid var(--border-light, var(--token-border-light, transparent)) !important;
+}
+
+/* Block 06: compact message rhythm.
+   Reduces vertical air around turns without touching markdown internals. */
+[data-testid^="conversation-turn-"] > div {
+  padding-top: 1.25rem !important;
+  padding-bottom: 0.25rem !important;
+}
+
+[data-message-author-role] {
+  font-size: var(--cgpt-message-font-size) !important;
+  line-height: var(--cgpt-message-line-height) !important;
+}
+
+/* Block 07: compact markdown spacing.
+   Risky selector: .markdown/.prose are app classes, but they are semantic content wrappers. */
+.markdown p,
+.prose p,
+.markdown ul,
+.prose ul,
+.markdown ol,
+.prose ol,
+.markdown pre,
+.prose pre,
+.markdown blockquote,
+.prose blockquote {
+  margin-top: 0.55em !important;
+  margin-bottom: 0.55em !important;
+}
+
+.markdown h1,
+.prose h1,
+.markdown h2,
+.prose h2,
+.markdown h3,
+.prose h3 {
+  margin-top: 1em !important;
+  margin-bottom: 0.45em !important;
+}
+
+/* Block 08: keep code blocks readable.
+   Leaves markdown/code behavior intact while inheriting the mono stack. */
+pre,
+code,
+.cm-editor,
+.cm-scroller,
+.cm-content,
+.cm-content *,
+#code-block-viewer,
+#code-block-viewer * {
+  font-family: var(--cgpt-font) !important;
+  font-size: var(--cgpt-code-font-size) !important;
+  line-height: 1.6 !important;
+}
+
+/* Block 09: wider composer.
+   Risky selector: aria labels vary by locale, so this also uses role/editable fallbacks. */
+form:has(textarea),
+form:has([contenteditable="true"]),
+[role="textbox"] {
+  max-width: var(--cgpt-composer-width) !important;
+}
+
+/* Block 10: remove the footer disclaimer.
+   Risky selector: targets ChatGPT's disclaimer transition class because CSS cannot match text content. */
+[class*="vt-disclaimer"],
+[class*="view-transition-name:var(--vt-disclaimer)"] {
+  display: none !important;
+}
+
+/* Block 11: make the composer as wide as the chat text column.
+   Uses #thread-bottom plus the unified composer form, avoiding generated classes. */
+.composer-parent {
+  --thread-content-max-width: var(--cgpt-chat-max-width) !important;
+  --thread-content-margin: var(--cgpt-chat-side-padding) !important;
+  --thread-content-margin-xs: var(--cgpt-chat-side-padding) !important;
+  --thread-content-margin-sm: var(--cgpt-chat-side-padding) !important;
+  --thread-content-margin-lg: var(--cgpt-chat-side-padding) !important;
+}
+
+#thread-bottom:has(form[data-type="unified-composer"]) {
+  --thread-content-max-width: var(--cgpt-chat-max-width) !important;
+  --thread-content-margin: var(--cgpt-chat-side-padding) !important;
+  --thread-content-margin-xs: var(--cgpt-chat-side-padding) !important;
+  --thread-content-margin-sm: var(--cgpt-chat-side-padding) !important;
+  --thread-content-margin-lg: var(--cgpt-chat-side-padding) !important;
+}
+
+#thread-bottom div:has(> div > form[data-type="unified-composer"]) {
+  --thread-content-max-width: var(--cgpt-chat-max-width) !important;
+  width: 100% !important;
+  max-width: var(--cgpt-chat-max-width) !important;
+}
+
+form[data-type="unified-composer"],
+form:has(#prompt-textarea),
+form:has([name="prompt-textarea"]) {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-inline: 0 !important;
+}
+
+form[data-type="unified-composer"] [data-composer-surface="true"] {
+  width: 100% !important;
+}
+
+/* Block 12: hide the top header and its chat actions.
+   Keeps message action buttons untouched by scoping share/options to #page-header. */
+main,
+#main,
+[role="main"] {
+  --header-height: 0px !important;
+}
+
+#page-header,
+header#page-header {
+  display: none !important;
+}
+
+#page-header [data-testid="share-chat-button"],
+#page-header [data-testid="conversation-options-button"],
+#page-header button[aria-label="Поделиться"],
+#page-header button[aria-label="Открыть параметры обсуждения"],
+#page-header button[aria-label*="ChatGPT"],
+#page-header a[aria-label*="ChatGPT"] {
+  display: none !important;
+}
+
+/* Block 13: remove the ChatGPT wordmark from the left sidebar.
+   Keeps sidebar controls/icons intact and restores the sidebar header height. */
+#sidebar-header {
+  min-height: 3.25rem !important;
+  justify-content: flex-end !important;
+}
+
+#sidebar-header a[aria-label="Домашняя"] {
+  display: none !important;
+}
