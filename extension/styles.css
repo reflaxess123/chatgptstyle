@@ -89,14 +89,14 @@ textarea::-webkit-scrollbar,
   border-radius: var(--cgpt-bubble-radius) !important;
   padding: var(--cgpt-bubble-padding-y) var(--cgpt-bubble-padding-x) !important;
   background: var(--message-surface, var(--token-message-surface, var(--main-surface-secondary, rgba(0, 0, 0, 0.04)))) !important;
-  border: 1px solid var(--border-light, var(--token-border-light, transparent)) !important;
+  border: 0 !important;
 }
 
 /* Block 05c: stable user message text color.
    Prevents accent colors from making user text unreadable; avoids SVG/icon selectors. */
 [data-message-author-role="user"] .user-message-bubble-color,
 [data-message-author-role="user"] .user-message-bubble-color :where(div, p, span, strong, em, a, code) {
-  color: #111111 !important;
+  color: #141413 !important;
 }
 
 html.dark [data-message-author-role="user"] .user-message-bubble-color,
@@ -107,7 +107,7 @@ body.dark [data-message-author-role="user"] .user-message-bubble-color :where(di
 .dark [data-message-author-role="user"] .user-message-bubble-color :where(div, p, span, strong, em, a, code),
 [data-theme="dark"] [data-message-author-role="user"] .user-message-bubble-color,
 [data-theme="dark"] [data-message-author-role="user"] .user-message-bubble-color :where(div, p, span, strong, em, a, code) {
-  color: #f5f5f5 !important;
+  color: #faf9f5 !important;
 }
 
 /* Block 05d: assistant bubbles.
@@ -278,18 +278,209 @@ header#page-header {
   display: none !important;
 }
 
-/* Block 14: darker dark theme surfaces.
-   Risky selector: token variables are app-level theme variables, but this keeps the override centralized. */
+/* Block 14: Claude-like theme surfaces.
+   Risky selector: token variables are app-level ChatGPT theme variables, but this keeps overrides centralized. */
+:root {
+  --cgpt-claude-page: #faf9f5;
+  --cgpt-claude-panel: #f5f4ed;
+  --cgpt-claude-raised: #ffffff;
+  --cgpt-claude-text: #141413;
+  --cgpt-claude-text-soft: #3d3d3a;
+  --cgpt-claude-text-muted: #73726c;
+  --cgpt-claude-border: rgba(31, 30, 29, 0.15);
+  --main-surface-primary: var(--cgpt-claude-page) !important;
+  --main-surface-secondary: #f5f4ed !important;
+  --main-surface-tertiary: #ffffff !important;
+  --sidebar-surface-primary: #f5f4ed !important;
+  --sidebar-surface-secondary: #ffffff !important;
+  --message-surface: #f5f4ed !important;
+  --token-main-surface-primary: var(--cgpt-claude-page) !important;
+  --token-main-surface-secondary: #f5f4ed !important;
+  --token-main-surface-tertiary: #ffffff !important;
+  --token-message-surface: #f5f4ed !important;
+  --token-bg-primary: var(--cgpt-claude-page) !important;
+  --token-bg-secondary: #f5f4ed !important;
+  --token-bg-elevated-secondary: #ffffff !important;
+  --bg-primary: var(--cgpt-claude-page) !important;
+  --bg-secondary: #f5f4ed !important;
+  --bg-elevated-secondary: #ffffff !important;
+  --text-primary: #141413 !important;
+  --text-secondary: #3d3d3a !important;
+  --text-tertiary: #73726c !important;
+  --border-light: rgba(31, 30, 29, 0.15) !important;
+  --token-border-light: rgba(31, 30, 29, 0.15) !important;
+}
+
 html.dark,
 body.dark,
 .dark,
 [data-theme="dark"] {
-  --main-surface-primary: #030303 !important;
-  --main-surface-secondary: #101010 !important;
-  --main-surface-tertiary: #171717 !important;
-  --message-surface: #121212 !important;
-  --bg-primary: #030303 !important;
-  --bg-secondary: #101010 !important;
-  --bg-elevated-secondary: #121212 !important;
-  --border-light: rgba(255, 255, 255, 0.1) !important;
+  --cgpt-claude-page: #30302e;
+  --cgpt-claude-panel: #262624;
+  --cgpt-claude-raised: #30302e;
+  --cgpt-claude-text: #faf9f5;
+  --cgpt-claude-text-soft: #c2c0b6;
+  --cgpt-claude-text-muted: #9c9a92;
+  --cgpt-claude-border: rgba(222, 220, 209, 0.15);
+  --main-surface-primary: #30302e !important;
+  --main-surface-secondary: #262624 !important;
+  --main-surface-tertiary: #141413 !important;
+  --sidebar-surface-primary: #262624 !important;
+  --sidebar-surface-secondary: #30302e !important;
+  --message-surface: #262624 !important;
+  --token-main-surface-primary: #30302e !important;
+  --token-main-surface-secondary: #262624 !important;
+  --token-main-surface-tertiary: #141413 !important;
+  --token-message-surface: #262624 !important;
+  --token-bg-primary: #30302e !important;
+  --token-bg-secondary: #262624 !important;
+  --token-bg-elevated-secondary: #262624 !important;
+  --bg-primary: #30302e !important;
+  --bg-secondary: #262624 !important;
+  --bg-elevated-secondary: #262624 !important;
+  --text-primary: #faf9f5 !important;
+  --text-secondary: #c2c0b6 !important;
+  --text-tertiary: #9c9a92 !important;
+  --border-light: rgba(222, 220, 209, 0.15) !important;
+  --token-border-light: rgba(222, 220, 209, 0.15) !important;
+}
+
+/* Block 15: direct Claude-like surfaces for areas ChatGPT paints with utility classes.
+   Risky selector: class substring matches are scoped to main/sidebar/composer/code surfaces only. */
+html,
+body,
+main,
+#main,
+[role="main"],
+[data-message-author-role],
+[data-message-author-role="assistant"] .markdown {
+  background: var(--cgpt-claude-page) !important;
+  color: var(--cgpt-claude-text) !important;
+}
+
+#stage-slideover-sidebar,
+#stage-slideover-sidebar nav[aria-label],
+#stage-slideover-sidebar [class*="bg-token-main-surface-primary"],
+#stage-slideover-sidebar [class*="bg-token-bg-primary"],
+#stage-slideover-sidebar [class*="bg-(--sidebar-surface-primary)"] {
+  background: var(--cgpt-claude-panel) !important;
+  color: var(--cgpt-claude-text) !important;
+}
+
+#stage-slideover-sidebar [data-sidebar-item="true"],
+#stage-slideover-sidebar a,
+#stage-slideover-sidebar button {
+  color: var(--cgpt-claude-text) !important;
+}
+
+#stage-slideover-sidebar [data-sidebar-item="true"]:hover,
+#stage-slideover-sidebar [data-sidebar-item="true"][aria-current="page"],
+#stage-slideover-sidebar [data-sidebar-item="true"][data-selected],
+#stage-slideover-sidebar a:hover,
+#stage-slideover-sidebar button:hover {
+  background: var(--cgpt-claude-raised) !important;
+}
+
+form[data-type="unified-composer"] [data-composer-surface="true"],
+form:has(#prompt-textarea) [data-composer-surface="true"],
+form:has([name="prompt-textarea"]) [data-composer-surface="true"] {
+  background: var(--cgpt-claude-raised) !important;
+  border: 1px solid var(--cgpt-claude-border) !important;
+  color: var(--cgpt-claude-text) !important;
+}
+
+form[data-type="unified-composer"],
+form[data-type="unified-composer"] textarea,
+form[data-type="unified-composer"] [contenteditable="true"],
+form:has(#prompt-textarea),
+form:has(#prompt-textarea) textarea,
+form:has(#prompt-textarea) [contenteditable="true"] {
+  color: var(--cgpt-claude-text) !important;
+}
+
+form[data-type="unified-composer"] [data-placeholder],
+form[data-type="unified-composer"] textarea::placeholder,
+form:has(#prompt-textarea) [data-placeholder],
+form:has(#prompt-textarea) textarea::placeholder {
+  color: var(--cgpt-claude-text-muted) !important;
+}
+
+.markdown pre,
+.prose pre,
+.markdown code:not(pre code),
+.prose code:not(pre code),
+.markdown [class*="bg-token-bg-elevated-secondary"],
+.prose [class*="bg-token-bg-elevated-secondary"],
+#code-block-viewer,
+.cm-editor,
+.cm-scroller,
+.cm-content {
+  background: var(--cgpt-claude-panel) !important;
+  color: var(--cgpt-claude-text) !important;
+}
+
+.markdown pre,
+.prose pre,
+#code-block-viewer,
+.cm-editor {
+  border: 0 !important;
+}
+
+.markdown pre *,
+.prose pre *,
+#code-block-viewer *,
+.cm-editor *,
+.cm-scroller,
+.cm-content {
+  border-color: transparent !important;
+}
+
+.markdown pre code,
+.prose pre code {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+html.dark .markdown pre,
+html.dark .prose pre,
+html.dark .markdown code:not(pre code),
+html.dark .prose code:not(pre code),
+html.dark .markdown [class*="bg-token-bg-elevated-secondary"],
+html.dark .prose [class*="bg-token-bg-elevated-secondary"],
+html.dark #code-block-viewer,
+html.dark .cm-editor,
+html.dark .cm-scroller,
+html.dark .cm-content,
+body.dark .markdown pre,
+body.dark .prose pre,
+body.dark .markdown code:not(pre code),
+body.dark .prose code:not(pre code),
+body.dark .markdown [class*="bg-token-bg-elevated-secondary"],
+body.dark .prose [class*="bg-token-bg-elevated-secondary"],
+body.dark #code-block-viewer,
+body.dark .cm-editor,
+body.dark .cm-scroller,
+body.dark .cm-content,
+.dark .markdown pre,
+.dark .prose pre,
+.dark .markdown code:not(pre code),
+.dark .prose code:not(pre code),
+.dark .markdown [class*="bg-token-bg-elevated-secondary"],
+.dark .prose [class*="bg-token-bg-elevated-secondary"],
+.dark #code-block-viewer,
+.dark .cm-editor,
+.dark .cm-scroller,
+.dark .cm-content,
+[data-theme="dark"] .markdown pre,
+[data-theme="dark"] .prose pre,
+[data-theme="dark"] .markdown code:not(pre code),
+[data-theme="dark"] .prose code:not(pre code),
+[data-theme="dark"] .markdown [class*="bg-token-bg-elevated-secondary"],
+[data-theme="dark"] .prose [class*="bg-token-bg-elevated-secondary"],
+[data-theme="dark"] #code-block-viewer,
+[data-theme="dark"] .cm-editor,
+[data-theme="dark"] .cm-scroller,
+[data-theme="dark"] .cm-content {
+  background: #262624 !important;
+  color: #faf9f5 !important;
 }
