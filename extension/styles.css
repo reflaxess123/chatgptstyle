@@ -111,14 +111,24 @@ body.dark [data-message-author-role="user"] .user-message-bubble-color :where(di
 }
 
 /* Block 05d: assistant bubbles.
-   Targets only assistant markdown containers, so buttons, formulas, and SVG icons stay outside the bubble rule. */
+   In light theme, keeps assistant answers on the page background without a separate wrapper. */
 [data-message-author-role="assistant"] .markdown {
   align-self: flex-start;
   width: fit-content !important;
   max-width: var(--cgpt-bubble-max-width) !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+html.dark [data-message-author-role="assistant"] .markdown,
+body.dark [data-message-author-role="assistant"] .markdown,
+.dark [data-message-author-role="assistant"] .markdown,
+[data-theme="dark"] [data-message-author-role="assistant"] .markdown {
   border-radius: var(--cgpt-bubble-radius) !important;
   padding: var(--cgpt-bubble-padding-y) var(--cgpt-bubble-padding-x) !important;
-  background: var(--main-surface-secondary, var(--token-main-surface-secondary, rgba(0, 0, 0, 0.04))) !important;
+  background: var(--main-surface-secondary, var(--token-main-surface-secondary, rgba(255, 255, 255, 0.06))) !important;
   border: 1px solid var(--border-light, var(--token-border-light, transparent)) !important;
 }
 
